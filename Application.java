@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * @author shic
+ * @author Connie Shi
  * Application class for existing applications in iTunesConnect
  */
 public class Application {
