@@ -1,25 +1,22 @@
 package com.timeinc.mageng.arkdistributor;
 
 /**
- * @author shic
  * InAppPurchase to upload to iTunesConnect
+ * @author Connie Shi
  */
 public class InAppPurchase{
-	private String productId, 
-		referenceName, 
-		wholesalePriceTier,
-		type;
+	private String productId, referenceName, wholesalePriceTier, type;
 	private double price;
 	
 	public InAppPurchase(
 			String productId, 
 			String referenceName, 
 			double price) {
-		this.productId = 			productId;
-		this.referenceName = 		referenceName;
-		this.price = 				price;
-		wholesalePriceTier = 		getPriceTier(price);
-		this.type = 				findType(wholesalePriceTier);
+		this.productId = productId;
+		this.referenceName = referenceName;
+		this.price = price;
+		wholesalePriceTier = getPriceTier(price);
+		this.type = findType(wholesalePriceTier);
 	}
 	
 	public String getProductId() {
@@ -39,6 +36,10 @@ public class InAppPurchase{
 		return "InAppPurchase [referenceName=" + referenceName + "]";
 	}
 
+	/**
+	 * returns Price of In App Purchase
+	 * @return
+	 */
 	public double getPrice() {
 		return price;
 	}
@@ -76,6 +77,10 @@ public class InAppPurchase{
 		else return "non-consumable";
 	}
 	
+	/** 
+	 * Gets type of In App Purchase
+	 * @return
+	 */
 	public String getType() {
 		return type;
 	}
