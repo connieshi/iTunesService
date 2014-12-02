@@ -8,20 +8,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * @author shic
- * Get records from Ark for InAppPurchase objects
- *
+ * @author Connie Shi
+ * Get records from Ark to insert into iTunesConnect
+ * 
  */
 public class ArkDAO {
 	static final Logger logger = LogManager.getLogger(ArkDAO.class);
 	private ArrayList<InAppPurchase> listFromArk = new ArrayList<InAppPurchase>();
 	
+	/**
+	 * Each ArkDAO instance queries into Ark with JDBC
+	 * @param sqlUser
+	 * @param sqlPassword
+	 * @param apps
+	 */
 	public ArkDAO(String sqlUser, String sqlPassword, Application apps){
 		getIssuesFromArk(sqlUser, sqlPassword, apps);
 	}
 
 	/**
-	 * Gets records from SQL, make InAppPurchase objects in HashMap
+	 * Gets records from Ark, put InAppPurchase objects in list
 	 * @param username
 	 * @param password
 	 * @param apps
@@ -31,7 +37,7 @@ public class ArkDAO {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql:"+ITMSConfiguration.getArkUrl(),
+					"jdbc:mysql:"+ ITMSConfiguration.getArkUrl(),
 					sqlUsername, sqlPassword);
 
 			Statement stmt = con.createStatement();
@@ -41,7 +47,7 @@ public class ArkDAO {
 							+ 	" FROM issue_meta im "
 							+ 	" JOIN issues i ON i.id = im.IssueId "
 							+ 	" WHERE im.ApplicationId = "	+ apps.getApplicationId() 
-							+	" AND im.onsale_date > curdate();" );
+							+	" AND im.onsale_date > curdate();" ); //Ensures future issues
 
 			while (rs.next()) {
 				String referenceID = rs.getString("ReferenceId");
@@ -61,6 +67,10 @@ public class ArkDAO {
 		} 
 	}
 
+	/**
+	 * List of all In App Purchases with release date after current date
+	 * @return
+	 */
 	public ArrayList<InAppPurchase> getListFromArk() {
 		return listFromArk;
 	}
