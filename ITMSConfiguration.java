@@ -16,15 +16,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * @author shic
- * Read and write XML files
+ * @author Connie Shi
+ * Read from configuration.xml and write to metadata.xml to upload to iTunesConnect
  */
 public class ITMSConfiguration {
 	
 	static final Logger logger = LogManager.getLogger(ITMSConfiguration.class);
 	private static ArrayList<InAppPurchase> appsFromITMS = new ArrayList<InAppPurchase>();
-	private static String arkUser, arkPassword, arkUrl, 
-		tempFolder, iTunesUser, iTunesPassword, teamId, pathToTransporter;
+	private static String arkUser, arkPassword, arkUrl, tempFolder, iTunesUser, iTunesPassword, teamId, pathToTransporter;
 	private static DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	private static DocumentBuilder dBuilder;
 	private static TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -135,7 +134,7 @@ public class ITMSConfiguration {
 							productId,
 							referenceName, 
 							0.00);
-					//Note: 0.00 is entered as default price for existing InAppPurchases
+							//Note: 0.00 is entered as default price for existing InAppPurchases
 							
 					appsFromITMS.add(iap);
 				}		
@@ -155,17 +154,16 @@ public class ITMSConfiguration {
 		try {
 			Document doc = dBuilder.newDocument();
 
-			Element rootElement =
-					doc.createElementNS("http://apple.com/itunes/importer", "package");
+			Element rootElement = doc.createElementNS("http://apple.com/itunes/importer", "package");
 			rootElement.setAttribute("version", "software5.2");
 			doc.appendChild(rootElement);
 
 								makeTag(doc, "team_id", 		teamId, 				rootElement);
 			Element software = 	makeTag(doc, "software",		null, 					rootElement);
-								makeTag(doc, "vendor_id", 		apps.getVendorId(),	software);
+								makeTag(doc, "vendor_id", 		apps.getVendorId(),		software);
 			Element readOnly =  makeTag(doc, "read_only_info", 	null, 					software);
 			Element appleId =	makeTag(doc, "read_only_value", apps.getAppleId(),		readOnly);
-				appleId.setAttribute("key", "apple-id");
+								appleId.setAttribute("key", "apple-id");
 			Element sm =		makeTag(doc, "software_metadata",null,					software);
 			Element inapps = 	makeTag(doc, "in_app_purchases", null,					sm);
 
@@ -209,7 +207,7 @@ public class ITMSConfiguration {
 	private static void generateForInAppPurchase(ArrayList<InAppPurchase> listFromArk, 
 			Element parent, Document doc, Application apps) { 
 
-		//loop to get tags for every app
+		//Get tabs for every application
 		for (int i = 0; i< listFromArk.size(); i++) {
 			parent.appendChild(getInApp(doc, apps, listFromArk.get(i)));
 		}
@@ -236,18 +234,17 @@ public class ITMSConfiguration {
 						makeTag(doc, "wholesale_price_tier",p.getWholesalePriceTier(), in);
 		Element locs = 	makeTag(doc, "locales", 			null, in_app);
 		Element loc =	makeTag(doc, "locale",				null, locs); 
-			loc.setAttribute("name", "en-US");
+						loc.setAttribute("name", "en-US");
 						makeTag(doc, "title", 				p.getReferenceName(), loc);
 						makeTag(doc, "description",			p.getLocaleDescription(p.getReferenceName()), loc);
+		//non-consumable cannot have publication name; free-subscription MUST have publication name
 		if (p.getType().equals("free-subscription")) 
-			//non-consumable cannot have publication name
-			//free-subscription MUST have publication name
 						makeTag(doc, "publication_name",	p.getReferenceName(), loc);
 		Element rev = 	makeTag(doc, "review_screenshot", 	null, in_app);
 						makeTag(doc, "size", 				apps.getScreenshotSize(), rev);
 						makeTag(doc, "file_name",			apps.getScreenshotName(), rev);
 		Element check = makeTag(doc, "checksum",			apps.getScreenshotChecksum(), rev);
-			check.setAttribute("type", "md5");
+						check.setAttribute("type", "md5");
 
 		return in_app;
 	}
@@ -269,38 +266,74 @@ public class ITMSConfiguration {
 		return e;
 	}
 
+	/**
+	 * List of all currently pending applications to be uploaded
+	 * @return
+	 */
 	public static ArrayList<InAppPurchase> getAppsFromITMS() {
 		return appsFromITMS;
 	}
 
+	/**
+	 * User information, access Ark database
+	 * @return
+	 */
 	public static String getArkUser() {
 		return arkUser;
 	}
 
+	/**
+	 * User information, access Ark database
+	 * @return
+	 */
 	public static String getArkPassword() {
 		return arkPassword;
 	}
 
+	/**
+	 * Ark URL, allows JDBC access
+	 * @return
+	 */
 	public static String getArkUrl() {
 		return arkUrl;
 	}
 
+	/**
+	 * Temporary storage of download files
+	 * @return
+	 */
 	public static String getTempFolder() {
 		return tempFolder;
 	}
 
+	/**
+	 * User access to iTunesConnect
+	 * @return
+	 */
 	public static String getiTunesUser() {
 		return iTunesUser;
 	}
 
+	/**
+	 * User access to iTunesConnect
+	 * @return
+	 */
 	public static String getiTunesPassword() {
 		return iTunesPassword;
 	}
 
+	/**
+	 * Team ID for Application
+	 * @return
+	 */
 	public static String getTeamId() {
 		return teamId;
 	}
 
+	/**
+	 * Transporter location will vary with machine
+	 * @return
+	 */
 	public static String getPathToTransporter() {
 		return pathToTransporter;
 	}
