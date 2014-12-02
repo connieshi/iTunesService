@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.spi.LoggerStream;
 
 /**
- * @author shic
+ * @author Connie Shi
  * Uses Transporter to obtain and generate metadata.xml to upload
  */
 public class ITunesService {
@@ -151,7 +151,7 @@ public class ITunesService {
 	}
 
 	/**
-	 * Get itmps package from iTunesConnect and put in temp folder
+	 * Get itmps package from iTunesConnect
 	 * @param app
 	 */
 	private void retrieveFile(Application app) {
@@ -190,6 +190,7 @@ public class ITunesService {
 	}
 
 	/**
+	 * Obtain output stream from Transporter for Logger
 	 * @param p
 	 */
 	private static void getTransporterStream(Process p) {
@@ -205,6 +206,7 @@ public class ITunesService {
 	}
 
 	/**
+	 * Debugging for logger
 	 * @param src
 	 * @param dest
 	 */
