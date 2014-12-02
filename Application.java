@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * @author Connie Shi
- * Application class for existing applications in iTunesConnect
+ * Application class for existing applications/magazines in iTunesConnect
  */
 public class Application {
 	private String vendorId, appleId, applicationId, type, clearedForSale, screenshotPath, screenshotName,
@@ -37,7 +37,7 @@ public class Application {
 	 */
 	public String getMD5Checksum(String screenshot){
 		StringBuffer sb = new StringBuffer();
-		try{
+		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			FileInputStream fis = new FileInputStream(screenshot);
 
@@ -59,42 +59,82 @@ public class Application {
 		return sb.toString();
 	}
 
+	/**
+	 * Vendor ID for company
+	 * @return
+	 */
 	public String getVendorId() {
 		return vendorId;
 	}
 
+	/**
+	 * Corresponding ID in iTunesConnect
+	 * @return
+	 */
 	public String getAppleId() {
 		return appleId;
 	}
 
+	/**
+	 * Corresponding applicationID in MySQL Ark Database
+	 * @return
+	 */
 	public String getApplicationId() {
 		return applicationId;
 	}
 
+	/**
+	 * Types include "free-subscription", etc.
+	 * @return
+	 */
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * clearedForSale = true/false
+	 * @return
+	 */
 	public String getClearedForSale() {
 		return clearedForSale;
 	}
 
+	/**
+	 * Path of screenshot
+	 * @return
+	 */
 	public String getScreenshotPath() {
 		return screenshotPath;
 	}
 
+	/**
+	 * Name of screenshot
+	 * @return
+	 */
 	public String getScreenshotName() {
 		return screenshotName;
 	}
 
+	/**
+	 * Screen shot size
+	 * @return
+	 */
 	public String getScreenshotSize() {
 		return screenshotSize;
 	}
 
+	/**
+	 * Check sum required for upload of metadata.xml
+	 * @return
+	 */
 	public String getScreenshotChecksum() {
 		return screenshotChecksum;
 	}
 
+	/**
+	 * Log4J for debugging
+	 * @return
+	 */
 	public static Logger getLogger() {
 		return logger;
 	}
