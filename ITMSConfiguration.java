@@ -51,8 +51,7 @@ public class ITMSConfiguration {
 
 			//Data specific to individual applications used to create Applications object and add to ArrayList
 			readApplicationInfo(doc, applications);
-		}	
-		catch (Exception e) {
+		} catch (Exception e) {
 			logger.catching(e);
 		}
 		return applications;
@@ -68,14 +67,14 @@ public class ITMSConfiguration {
 			Node nNode = n.item(temp);
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 				Element eElement = (Element) nNode;
-				iTunesUser = 		eElement.getElementsByTagName("itunes-account").item(0).getTextContent();
-				iTunesPassword = 	eElement.getElementsByTagName("itunes-password").item(0).getTextContent();
-				teamId = 			eElement.getElementsByTagName("itunes-teamid").item(0).getTextContent();
-				arkUrl = 			eElement.getElementsByTagName("ark-db-url").item(0).getTextContent();
-				arkUser = 			eElement.getElementsByTagName("ark-db-username").item(0).getTextContent();
-				arkPassword = 		eElement.getElementsByTagName("ark-db-password").item(0).getTextContent();
+				iTunesUser = eElement.getElementsByTagName("itunes-account").item(0).getTextContent();
+				iTunesPassword = eElement.getElementsByTagName("itunes-password").item(0).getTextContent();
+				teamId = eElement.getElementsByTagName("itunes-teamid").item(0).getTextContent();
+				arkUrl = eElement.getElementsByTagName("ark-db-url").item(0).getTextContent();
+				arkUser = eElement.getElementsByTagName("ark-db-username").item(0).getTextContent();
+				arkPassword = eElement.getElementsByTagName("ark-db-password").item(0).getTextContent();
 				pathToTransporter = eElement.getElementsByTagName("path-to-transporter").item(0).getTextContent();
-				tempFolder = 		eElement.getElementsByTagName("temp-folder").item(0).getTextContent();
+				tempFolder = eElement.getElementsByTagName("temp-folder").item(0).getTextContent();
 			}		
 		}
 	}
@@ -91,12 +90,12 @@ public class ITMSConfiguration {
 			Node nNode = nList.item(temp);
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 				Element eElement = (Element) nNode;
-				String vendorId = 				eElement.getElementsByTagName("itunes-vendorid").item(0).getTextContent();
-				String appleId = 				eElement.getElementsByTagName("appleid").item(0).getTextContent();
-				String applicationId = 			eElement.getElementsByTagName("ark-applicationid").item(0).getTextContent();
-				String type = 					eElement.getElementsByTagName("item-type").item(0).getTextContent();
-				String clearedForSale = 		eElement.getElementsByTagName("cleared-for-sale").item(0).getTextContent();
-				String screenshotPath = 		eElement.getElementsByTagName("screenshot-path").item(0).getTextContent();
+				String vendorId = eElement.getElementsByTagName("itunes-vendorid").item(0).getTextContent();
+				String appleId = eElement.getElementsByTagName("appleid").item(0).getTextContent();
+				String applicationId = eElement.getElementsByTagName("ark-applicationid").item(0).getTextContent();
+				String type = eElement.getElementsByTagName("item-type").item(0).getTextContent();
+				String clearedForSale = eElement.getElementsByTagName("cleared-for-sale").item(0).getTextContent();
+				String screenshotPath = eElement.getElementsByTagName("screenshot-path").item(0).getTextContent();
 
 				Application app = new Application (
 						vendorId, 
@@ -127,8 +126,8 @@ public class ITMSConfiguration {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					String productId = 				eElement.getElementsByTagName("product_id").item(0).getTextContent();
-					String referenceName = 			eElement.getElementsByTagName("reference_name").item(0).getTextContent();
+					String productId = eElement.getElementsByTagName("product_id").item(0).getTextContent();
+					String referenceName = eElement.getElementsByTagName("reference_name").item(0).getTextContent();
 
 					InAppPurchase iap = new InAppPurchase(
 							productId,
@@ -158,14 +157,14 @@ public class ITMSConfiguration {
 			rootElement.setAttribute("version", "software5.2");
 			doc.appendChild(rootElement);
 
-								makeTag(doc, "team_id", 		teamId, 				rootElement);
-			Element software = 	makeTag(doc, "software",		null, 					rootElement);
-								makeTag(doc, "vendor_id", 		apps.getVendorId(),		software);
-			Element readOnly =  makeTag(doc, "read_only_info", 	null, 					software);
-			Element appleId =	makeTag(doc, "read_only_value", apps.getAppleId(),		readOnly);
-								appleId.setAttribute("key", "apple-id");
-			Element sm =		makeTag(doc, "software_metadata",null,					software);
-			Element inapps = 	makeTag(doc, "in_app_purchases", null,					sm);
+			makeTag(doc, "team_id", teamId, rootElement);
+			Element software = makeTag(doc, "software", null, rootElement);
+			makeTag(doc, "vendor_id", apps.getVendorId(), software);
+			Element readOnly = makeTag(doc, "read_only_info", null, software);
+			Element appleId = makeTag(doc, "read_only_value", apps.getAppleId(), readOnly);
+			appleId.setAttribute("key", "apple-id");
+			Element sm = makeTag(doc, "software_metadata", null, software);
+			Element inapps = makeTag(doc, "in_app_purchases", null, sm);
 
 			generateForInAppPurchase(listFromArk, inapps, doc, apps);
 			printToXML(doc, apps);
@@ -204,8 +203,7 @@ public class ITMSConfiguration {
 	 * @param doc
 	 * @param apps
 	 */
-	private static void generateForInAppPurchase(ArrayList<InAppPurchase> listFromArk, 
-			Element parent, Document doc, Application apps) { 
+	private static void generateForInAppPurchase(ArrayList<InAppPurchase> listFromArk, Element parent, Document doc, Application apps) { 
 
 		//Get tabs for every application
 		for (int i = 0; i< listFromArk.size(); i++) {
@@ -223,28 +221,28 @@ public class ITMSConfiguration {
 	private static Node getInApp(Document doc, Application apps, InAppPurchase p) {
 		Element in_app = doc.createElement("in_app_purchase");
 
-						makeTag(doc, "product_id", 			p.getProductId(), in_app);
-						makeTag(doc, "reference_name", 		p.getReferenceName(), in_app);
-						makeTag(doc, "type", 				p.getType(), in_app);
-		Element prods = makeTag(doc, "products",			null, in_app);  
-		Element prod = 	makeTag(doc, "product",				null, prods);
-						makeTag(doc, "cleared_for_sale",	apps.getClearedForSale(), prod);
-		Element ins = 	makeTag(doc, "intervals",			null, prod);
-		Element in =	makeTag(doc, "interval",			null, ins);
-						makeTag(doc, "wholesale_price_tier",p.getWholesalePriceTier(), in);
-		Element locs = 	makeTag(doc, "locales", 			null, in_app);
-		Element loc =	makeTag(doc, "locale",				null, locs); 
-						loc.setAttribute("name", "en-US");
-						makeTag(doc, "title", 				p.getReferenceName(), loc);
-						makeTag(doc, "description",			p.getLocaleDescription(p.getReferenceName()), loc);
+		makeTag(doc, "product_id", p.getProductId(), in_app);
+		makeTag(doc, "reference_name", p.getReferenceName(), in_app);
+		makeTag(doc, "type", p.getType(), in_app);
+		Element prods = makeTag(doc, "products", null, in_app);  
+		Element prod = 	makeTag(doc, "product", null, prods);
+		makeTag(doc, "cleared_for_sale", apps.getClearedForSale(), prod);
+		Element ins = 	makeTag(doc, "intervals", null, prod);
+		Element in =	makeTag(doc, "interval", null, ins);
+		makeTag(doc, "wholesale_price_tier",p.getWholesalePriceTier(), in);
+		Element locs = 	makeTag(doc, "locales", null, in_app);
+		Element loc =	makeTag(doc, "locale", null, locs); 
+		loc.setAttribute("name", "en-US");
+		makeTag(doc, "title", p.getReferenceName(), loc);
+		makeTag(doc, "description", p.getLocaleDescription(p.getReferenceName()), loc);
 		//non-consumable cannot have publication name; free-subscription MUST have publication name
 		if (p.getType().equals("free-subscription")) 
-						makeTag(doc, "publication_name",	p.getReferenceName(), loc);
-		Element rev = 	makeTag(doc, "review_screenshot", 	null, in_app);
-						makeTag(doc, "size", 				apps.getScreenshotSize(), rev);
-						makeTag(doc, "file_name",			apps.getScreenshotName(), rev);
-		Element check = makeTag(doc, "checksum",			apps.getScreenshotChecksum(), rev);
-						check.setAttribute("type", "md5");
+			makeTag(doc, "publication_name", p.getReferenceName(), loc);
+		Element rev = 	makeTag(doc, "review_screenshot", null, in_app);
+		makeTag(doc, "size", apps.getScreenshotSize(), rev);
+		makeTag(doc, "file_name", apps.getScreenshotName(), rev);
+		Element check = makeTag(doc, "checksum", apps.getScreenshotChecksum(), rev);
+		check.setAttribute("type", "md5");
 
 		return in_app;
 	}
@@ -259,9 +257,8 @@ public class ITMSConfiguration {
 	 */
 	private static Element makeTag(Document doc, String name, String text, Element parent) {
 		Element e = doc.createElement(name);
-		if (text != null) {
+		if (text != null)
 			e.appendChild(doc.createTextNode(text));
-		}
 		parent.appendChild(e);
 		return e;
 	}
